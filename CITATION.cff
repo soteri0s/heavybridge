@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper."
+title: "HeavyBridge: Tempered Lévy Bridges for Anchored Diffusion Driving Policies"
+authors:
+  - family-names: Chatzis
+    given-names: Sotirios
+    orcid: "https://orcid.org/0000-0002-4956-4013"
+    affiliation: "Cyprus University of Technology"
+  - family-names: Papadoulas
+    given-names: Loukas
+    affiliation: "Ethical AI Novelties Ltd"
+license: MIT
+repository-code: "https://github.com/soteri0s/heavybridge"
+preferred-citation:
+  type: article
+  title: "HeavyBridge: Tempered Lévy Bridges for Anchored Diffusion Driving Policies"
+  authors:
+    - family-names: Chatzis
+      given-names: Sotirios
+    - family-names: Papadoulas
+      given-names: Loukas
+  journal: "Transactions on Machine Learning Research"
+  year: 2026
+  url: "https://openreview.net/forum?id=5p1S532fXM"

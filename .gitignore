@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.DS_Store
+experiments_navsim/runpod/config.env
+experiments_navsim/runpod/runpod_results/
+experiments_navsim/runpod/dumps/
+experiments_navsim/runpod/selections/
+experiments_navsim/runpod/results/
+*.pth
+*.ckpt
+analysis/**/fig_*.pdf
+analysis/seeds_report.md
