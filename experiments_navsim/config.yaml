@@ -1,0 +1,22 @@
+# =============================================================================
+# config.yaml -- shared geometry/time conventions for the NAVSIM pipeline.
+# Read by navsim_agent.py, run_dump.py and select_*.py.
+# =============================================================================
+
+# Trajectory / time conventions (NAVSIM: 8 future poses @ 2 Hz over 4 s).
+# Ego frame: +x forward, +y left. Poses are (x, y, heading).
+trajectory:
+  dt: 0.5
+  num_poses: 8
+
+# Predicted BEV semantic map (stored in the dumps for diagnostics only).
+# Drivable area = road (1) UNION centerline (3).
+bev:
+  drivable_classes: [1, 3]
+  pixel_size: 0.25
+
+# Per-scene dump: number of sampler passes per scene. Pass 0 gives the deployed
+# modes; passes 1..samples-1 (seeds token_seed + m) feed only the within-anchor
+# diversity metric. The paper's dumps used 8.
+dump:
+  samples: 8
