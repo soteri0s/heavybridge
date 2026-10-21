@@ -1,0 +1,12 @@
+# =============================================================================
+# Hydra config for the ReplayAgent (CPU-only PDM scoring of a precomputed
+# selection: the argmax plan or a forced-anchor rank). Selected on the navsim
+# eval CLI with  agent=replay_agent . remote_run.sh copies this file into
+#   <navsim package>/planning/script/config/common/agent/
+# and MC_SELECTION points at the selection JSON being scored.
+# =============================================================================
+_target_: navsim_agent.ReplayAgent
+_convert_: all
+
+selection_path: null       # null => os.environ["MC_SELECTION"]
+config_path: null          # null => os.environ["MC_CONFIG"]
