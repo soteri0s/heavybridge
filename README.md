@@ -6,7 +6,7 @@ Code, per-scene results and pre-registration documents for
 
 Anchored diffusion planners first pick one of K anchor trajectories and then refine it with a Gaussian denoising bridge. HeavyBridge replaces the Gaussian bridge noise with a per-step tempered α-stable scale mixture. The forward chain is exactly an α-stable Lévy bridge on any time grid, and all standard bridge machinery (training, fast samplers, warm starts) carries over. On NAVSIM the per-step Lévy planner scores the same whichever anchor it is handed, at no cost at the deployed argmax. A per-rollout heavy tail, by contrast, is provably Gaussian in its deterministic dynamics and, when its scale is learned per scene, collapses under the forced-anchor stress test.
 
-Checkpoints and raw evaluation outputs (selection files, training logs) are on Hugging Face: **[huggingface.co/soteri0s/heavybridge](https://huggingface.co/soteri0s/heavybridge)**.
+Checkpoints are on Hugging Face: **[huggingface.co/soteri0s/heavybridge](https://huggingface.co/soteri0s/heavybridge)**. The raw selection files and training logs are available from the authors on request.
 
 ## Repository layout
 
