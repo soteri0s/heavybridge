@@ -44,8 +44,9 @@ confirmation phase are `R0full`, `R3gfull` (seed 1) and `R0full_s2`,
 `R3gfull_s2` (seed 2); `analysis/seeds_analysis.py` computes the paired
 bootstrap statistics of the paper from these files.
 
-The selection files (the chosen trajectory of every scene at every rank) and
-the training logs are on Hugging Face with the checkpoints.
+The checkpoints are on Hugging Face (huggingface.co/soteri0s/heavybridge). The
+selection files (the chosen trajectory of every scene at every rank) and the
+training logs are available from the authors on request.
 
 These results are derived from NAVSIM (OpenScene / nuPlan) and inherit the
 licenses of those datasets.
