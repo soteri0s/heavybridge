@@ -1,0 +1,544 @@
+HeavyBridge numerical verification  (numpy 2.5.3, scipy 1.18.1)
+mixing module: /home/claude/release/experiments_navsim/runpod/heavybridge_mixing.py
+schedule: VP-Karras beta_d=2.0, beta_min=0.1, T=1.0, uniform grid N=20; MC tolerance = 4 SE; paper sample sizes
+
+=== Item 1: Lemma 2: a_t, b_t invariant, (c_t^lambda)^2 = lambda c_t^2, t in {0.2,0.5,0.8}, lambda in {1,3.7} ===
+  PASS  lambda=1.0 abc(): max rel |da|  (incl. a_s|t)              err=0.000e+00  tol=1.000e-14  [machine precision]
+  PASS  lambda=1.0 abc(): max rel |db|  (incl. b_s|t)              err=0.000e+00  tol=1.000e-14  [machine precision]
+  PASS  lambda=1.0 abc(): max rel |c^2_lam - lam c^2| (incl. s|t)  err=0.000e+00  tol=1.000e-14  [machine precision]
+  PASS  lambda=1.0 profile_sig2+profile_abc: max rel |da|          err=0.000e+00  tol=1.000e-14  [machine precision]
+  PASS  lambda=1.0 profile_sig2+profile_abc: max rel |db|          err=0.000e+00  tol=1.000e-14  [machine precision]
+  PASS  lambda=1.0 profile_sig2+profile_abc: max rel |dc^2|        err=0.000e+00  tol=1.000e-14  [machine precision]
+  PASS  lambda=1.0 quadrature of lambda*g^2: max rel |da|,|db|,|dc^2| err=6.716e-16  tol=1.000e-12  [quadrature-limited reference]
+  PASS  lambda=3.7 abc(): max rel |da|  (incl. a_s|t)              err=2.712e-16  tol=1.000e-14  [machine precision]
+  PASS  lambda=3.7 abc(): max rel |db|  (incl. b_s|t)              err=0.000e+00  tol=1.000e-14  [machine precision]
+  PASS  lambda=3.7 abc(): max rel |c^2_lam - lam c^2| (incl. s|t)  err=1.368e-16  tol=1.000e-14  [machine precision]
+  PASS  lambda=3.7 profile_sig2+profile_abc: max rel |da|          err=1.745e-16  tol=1.000e-14  [machine precision]
+  PASS  lambda=3.7 profile_sig2+profile_abc: max rel |db|          err=1.679e-16  tol=1.000e-14  [machine precision]
+  PASS  lambda=3.7 profile_sig2+profile_abc: max rel |dc^2|        err=3.701e-16  tol=1.000e-14  [machine precision]
+  PASS  lambda=3.7 quadrature of lambda*g^2: max rel |da|,|db|,|dc^2| err=1.070e-15  tol=1.000e-12  [quadrature-limited reference]
+  info  grid times used: [0.2, 0.5, 0.8]
+--> Item 1: PASS   (0.0 s)
+
+=== Item 2: Prop. 1(i): Student-t density vs 2e6-sample Inverse-Gamma mixture, D=4, nu=5 ===
+  PASS  Eq. (Stdensity) vs scipy.stats.multivariate_t (rel)        err=4.441e-16  tol=1.000e-12  [exact formula]
+  PASS  iid IG mixture, r_t=0.0: density (rel units)               est=1.00015 ref=1 err=1.49e-04 (0.16 SE)  tol=3.83e-03
+  PASS  iid IG mixture, r_t=0.5: density (rel units)               est=1.00005 ref=1 err=4.61e-05 (0.06 SE)  tol=3.30e-03
+  PASS  iid IG mixture, r_t=1.0: density (rel units)               est=0.99982 ref=1 err=1.80e-04 (0.32 SE)  tol=2.26e-03
+  PASS  iid IG mixture, r_t=2.0: density (rel units)               est=0.999976 ref=1 err=2.36e-05 (0.09 SE)  tol=1.01e-03
+  PASS  iid IG mixture, r_t=3.0: density (rel units)               est=1.00051 ref=1 err=5.12e-04 (1.05 SE)  tol=1.94e-03
+  PASS  iid IG mixture, r_t=5.0: density (rel units)               est=0.999534 ref=1 err=4.66e-04 (0.34 SE)  tol=5.55e-03
+  info  i.i.d. IG mixture, n=2000000: max rel error 5.12e-04 (paper states ~1e-4)
+  info  stratified IG mixture (sample_ig default), n=2000000: max rel error 3.42e-07 (paper: ~1e-4; i.i.d. SE does not apply to stratified draws)
+--> Item 2: PASS   (1.6 s)
+
+=== Item 3: Prop. 1(iii): Student-t score vs central-difference differentiation ===
+  PASS  max abs |score - central diff| (26 points, h=1e-05)        err=1.802e-10  tol=1.000e-06  [paper: 1e-6]
+  info  max relative error 8.53e-11
+--> Item 3: PASS   (0.0 s)
+
+=== Item 4: Prop. 1(ii): E[1/lambda|.], E[lambda|.] vs self-normalized importance sampling ===
+  PASS  r_t=0.0: E[1/lambda|.]                                     est=1.8009 ref=1.8 err=9.03e-04 (0.59 SE)  tol=6.14e-03
+  PASS  r_t=0.0: E[lambda|.]                                       est=0.714272 ref=0.714286 err=1.35e-05 (0.03 SE)  tol=1.60e-03
+  info  r_t=0.0: ESS/n = 0.353
+  PASS  r_t=0.5: E[1/lambda|.]                                     est=1.71489 ref=1.71429 err=6.04e-04 (0.49 SE)  tol=4.93e-03
+  PASS  r_t=0.5: E[lambda|.]                                       est=0.750061 ref=0.75 err=6.08e-05 (0.16 SE)  tol=1.50e-03
+  info  r_t=0.5: ESS/n = 0.423
+  PASS  r_t=1.0: E[1/lambda|.]                                     est=1.49989 ref=1.5 err=1.06e-04 (0.14 SE)  tol=2.94e-03
+  PASS  r_t=1.0: E[lambda|.]                                       est=0.857351 ref=0.857143 err=2.08e-04 (0.62 SE)  tol=1.35e-03
+  info  r_t=1.0: ESS/n = 0.610
+  PASS  r_t=2.0: E[1/lambda|.]                                     est=0.99975 ref=1 err=2.50e-04 (0.85 SE)  tol=1.18e-03
+  PASS  r_t=2.0: E[lambda|.]                                       est=1.28569 ref=1.28571 err=2.65e-05 (0.06 SE)  tol=1.70e-03
+  info  r_t=2.0: ESS/n = 0.888
+  PASS  r_t=3.0: E[1/lambda|.]                                     est=0.642994 ref=0.642857 err=1.37e-04 (0.68 SE)  tol=8.06e-04
+  PASS  r_t=3.0: E[lambda|.]                                       est=1.99893 ref=2 err=1.07e-03 (1.27 SE)  tol=3.39e-03
+  info  r_t=3.0: ESS/n = 0.679
+  PASS  r_t=5.0: E[1/lambda|.]                                     est=0.300162 ref=0.3 err=1.62e-04 (0.92 SE)  tol=7.02e-04
+  PASS  r_t=5.0: E[lambda|.]                                       est=4.28515 ref=4.28571 err=5.65e-04 (0.15 SE)  tol=1.54e-02
+  info  r_t=5.0: ESS/n = 0.206
+  info  n = 2000000 prior draws per point
+--> Item 4: PASS   (0.7 s)
+
+=== Item 5: Lemma S-composition: a_s=a_s|t a_t, b_s=b_s|t+a_s|t b_t, c_s^2=c_s|t^2+a_s|t^2 c_t^2 at (s,t)=(0.3,0.7) ===
+  PASS  |a_s - a_s|t a_t|                                          err=0.000e+00  tol=1.000e-15  [paper: 1e-15]
+  PASS  |b_s - (b_s|t + a_s|t b_t)|                                err=0.000e+00  tol=1.000e-15  [paper: 1e-15]
+  PASS  |c_s^2 - (c_s|t^2 + a_s|t^2 c_t^2)|                        err=1.388e-17  tol=1.000e-15  [paper: 1e-15]
+  info  s=0.30000000000000004, t=0.7000000000000001 (grid points); a_s=0.103841 b_s=0.881853 c_s^2=0.105886
+  info  extra: profile coefficients, 1000 tempered profiles: max abs error 2.22e-16
+--> Item 5: PASS   (0.1 s)
+
+=== Item 6: Prop. 3(i): CF of sqrt(lambda_i u_i) eps_i and two-step closure, Kanter, 4e6 samples, alpha=1.5 ===
+  PASS  step  0, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702291 ref=0.702189 err=1.02e-04 (0.47 SE)  tol=8.73e-04
+  PASS  step  0, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-5.28015e-05 ref=0 err=5.28e-05 (0.19 SE)  tol=1.12e-03
+  PASS  step  0, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.36844 ref=0.367879 err=5.60e-04 (1.79 SE)  tol=1.26e-03
+  PASS  step  0, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.000160327 ref=0 err=1.60e-04 (0.47 SE)  tol=1.37e-03
+  PASS  step  0, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0594819 ref=0.0591057 err=3.76e-04 (1.07 SE)  tol=1.41e-03
+  PASS  step  0, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=0.000286935 ref=0 err=2.87e-04 (0.81 SE)  tol=1.41e-03
+  PASS  step  1, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702142 ref=0.702189 err=4.67e-05 (0.21 SE)  tol=8.74e-04
+  PASS  step  1, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.000382116 ref=0 err=3.82e-04 (1.36 SE)  tol=1.12e-03
+  PASS  step  1, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.368223 ref=0.367879 err=3.43e-04 (1.09 SE)  tol=1.26e-03
+  PASS  step  1, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.000378742 ref=0 err=3.79e-04 (1.10 SE)  tol=1.37e-03
+  PASS  step  1, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0590876 ref=0.0591057 err=1.82e-05 (0.05 SE)  tol=1.41e-03
+  PASS  step  1, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=-0.000660355 ref=0 err=6.60e-04 (1.87 SE)  tol=1.41e-03
+  PASS  step  2, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702282 ref=0.702189 err=9.33e-05 (0.43 SE)  tol=8.73e-04
+  PASS  step  2, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-3.42667e-05 ref=0 err=3.43e-05 (0.12 SE)  tol=1.12e-03
+  PASS  step  2, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.368269 ref=0.367879 err=3.89e-04 (1.24 SE)  tol=1.26e-03
+  PASS  step  2, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.000140217 ref=0 err=1.40e-04 (0.41 SE)  tol=1.37e-03
+  PASS  step  2, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0593611 ref=0.0591057 err=2.55e-04 (0.72 SE)  tol=1.41e-03
+  PASS  step  2, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=0.000252611 ref=0 err=2.53e-04 (0.71 SE)  tol=1.41e-03
+  PASS  step  3, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702018 ref=0.702189 err=1.70e-04 (0.78 SE)  tol=8.75e-04
+  PASS  step  3, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.000421579 ref=0 err=4.22e-04 (1.50 SE)  tol=1.12e-03
+  PASS  step  3, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.368387 ref=0.367879 err=5.08e-04 (1.62 SE)  tol=1.25e-03
+  PASS  step  3, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.000542485 ref=0 err=5.42e-04 (1.58 SE)  tol=1.37e-03
+  PASS  step  3, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0593263 ref=0.0591057 err=2.21e-04 (0.63 SE)  tol=1.41e-03
+  PASS  step  3, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=4.45768e-05 ref=0 err=4.46e-05 (0.13 SE)  tol=1.41e-03
+  PASS  step  4, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702182 ref=0.702189 err=6.13e-06 (0.03 SE)  tol=8.74e-04
+  PASS  step  4, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=0.000321938 ref=0 err=3.22e-04 (1.15 SE)  tol=1.12e-03
+  PASS  step  4, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367897 ref=0.367879 err=1.74e-05 (0.06 SE)  tol=1.26e-03
+  PASS  step  4, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-0.000804324 ref=0 err=8.04e-04 (2.35 SE)  tol=1.37e-03
+  PASS  step  4, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0589916 ref=0.0591057 err=1.14e-04 (0.32 SE)  tol=1.41e-03
+  PASS  step  4, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=4.2534e-05 ref=0 err=4.25e-05 (0.12 SE)  tol=1.41e-03
+  PASS  step  5, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702178 ref=0.702189 err=1.02e-05 (0.05 SE)  tol=8.74e-04
+  PASS  step  5, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.000231652 ref=0 err=2.32e-04 (0.82 SE)  tol=1.12e-03
+  PASS  step  5, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367787 ref=0.367879 err=9.20e-05 (0.29 SE)  tol=1.26e-03
+  PASS  step  5, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.00022893 ref=0 err=2.29e-04 (0.67 SE)  tol=1.37e-03
+  PASS  step  5, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0595859 ref=0.0591057 err=4.80e-04 (1.36 SE)  tol=1.41e-03
+  PASS  step  5, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=-0.000148255 ref=0 err=1.48e-04 (0.42 SE)  tol=1.41e-03
+  PASS  step  6, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.701975 ref=0.702189 err=2.13e-04 (0.98 SE)  tol=8.74e-04
+  PASS  step  6, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=3.22819e-05 ref=0 err=3.23e-05 (0.11 SE)  tol=1.12e-03
+  PASS  step  6, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.36802 ref=0.367879 err=1.41e-04 (0.45 SE)  tol=1.26e-03
+  PASS  step  6, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.000104886 ref=0 err=1.05e-04 (0.31 SE)  tol=1.37e-03
+  PASS  step  6, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0590276 ref=0.0591057 err=7.82e-05 (0.22 SE)  tol=1.41e-03
+  PASS  step  6, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=0.00031054 ref=0 err=3.11e-04 (0.88 SE)  tol=1.41e-03
+  PASS  step  7, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702328 ref=0.702189 err=1.39e-04 (0.64 SE)  tol=8.74e-04
+  PASS  step  7, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=2.81458e-05 ref=0 err=2.81e-05 (0.10 SE)  tol=1.12e-03
+  PASS  step  7, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.368096 ref=0.367879 err=2.16e-04 (0.69 SE)  tol=1.26e-03
+  PASS  step  7, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-0.000289784 ref=0 err=2.90e-04 (0.85 SE)  tol=1.37e-03
+  PASS  step  7, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0585337 ref=0.0591057 err=5.72e-04 (1.62 SE)  tol=1.41e-03
+  PASS  step  7, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=9.25082e-05 ref=0 err=9.25e-05 (0.26 SE)  tol=1.41e-03
+  PASS  step  8, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.7018 ref=0.702189 err=3.88e-04 (1.78 SE)  tol=8.75e-04
+  PASS  step  8, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.000226457 ref=0 err=2.26e-04 (0.81 SE)  tol=1.12e-03
+  PASS  step  8, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367635 ref=0.367879 err=2.44e-04 (0.78 SE)  tol=1.26e-03
+  PASS  step  8, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.000435465 ref=0 err=4.35e-04 (1.27 SE)  tol=1.37e-03
+  PASS  step  8, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0588 ref=0.0591057 err=3.06e-04 (0.87 SE)  tol=1.41e-03
+  PASS  step  8, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=0.000194236 ref=0 err=1.94e-04 (0.55 SE)  tol=1.41e-03
+  PASS  step  9, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702499 ref=0.702189 err=3.10e-04 (1.42 SE)  tol=8.73e-04
+  PASS  step  9, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-3.40604e-05 ref=0 err=3.41e-05 (0.12 SE)  tol=1.12e-03
+  PASS  step  9, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367728 ref=0.367879 err=1.51e-04 (0.48 SE)  tol=1.26e-03
+  PASS  step  9, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-0.000147627 ref=0 err=1.48e-04 (0.43 SE)  tol=1.37e-03
+  PASS  step  9, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0595111 ref=0.0591057 err=4.05e-04 (1.15 SE)  tol=1.41e-03
+  PASS  step  9, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=-0.000370933 ref=0 err=3.71e-04 (1.05 SE)  tol=1.41e-03
+  PASS  step 10, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.701871 ref=0.702189 err=3.18e-04 (1.45 SE)  tol=8.75e-04
+  PASS  step 10, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=0.00021368 ref=0 err=2.14e-04 (0.76 SE)  tol=1.12e-03
+  PASS  step 10, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367643 ref=0.367879 err=2.36e-04 (0.75 SE)  tol=1.26e-03
+  PASS  step 10, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-5.86993e-05 ref=0 err=5.87e-05 (0.17 SE)  tol=1.37e-03
+  PASS  step 10, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0595627 ref=0.0591057 err=4.57e-04 (1.30 SE)  tol=1.41e-03
+  PASS  step 10, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=-0.000304952 ref=0 err=3.05e-04 (0.86 SE)  tol=1.41e-03
+  PASS  step 11, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.701827 ref=0.702189 err=3.62e-04 (1.65 SE)  tol=8.74e-04
+  PASS  step 11, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=0.000212371 ref=0 err=2.12e-04 (0.76 SE)  tol=1.12e-03
+  PASS  step 11, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367749 ref=0.367879 err=1.31e-04 (0.42 SE)  tol=1.26e-03
+  PASS  step 11, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=2.36705e-05 ref=0 err=2.37e-05 (0.07 SE)  tol=1.37e-03
+  PASS  step 11, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0590776 ref=0.0591057 err=2.82e-05 (0.08 SE)  tol=1.41e-03
+  PASS  step 11, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=0.000167708 ref=0 err=1.68e-04 (0.47 SE)  tol=1.41e-03
+  PASS  step 12, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702318 ref=0.702189 err=1.30e-04 (0.59 SE)  tol=8.74e-04
+  PASS  step 12, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.000387219 ref=0 err=3.87e-04 (1.38 SE)  tol=1.12e-03
+  PASS  step 12, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.368307 ref=0.367879 err=4.28e-04 (1.36 SE)  tol=1.26e-03
+  PASS  step 12, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.000505756 ref=0 err=5.06e-04 (1.47 SE)  tol=1.37e-03
+  PASS  step 12, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0593383 ref=0.0591057 err=2.33e-04 (0.66 SE)  tol=1.41e-03
+  PASS  step 12, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=0.000332424 ref=0 err=3.32e-04 (0.94 SE)  tol=1.41e-03
+  PASS  step 13, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702063 ref=0.702189 err=1.25e-04 (0.57 SE)  tol=8.74e-04
+  PASS  step 13, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=0.000318973 ref=0 err=3.19e-04 (1.13 SE)  tol=1.12e-03
+  PASS  step 13, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367874 ref=0.367879 err=5.93e-06 (0.02 SE)  tol=1.26e-03
+  PASS  step 13, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=9.83631e-05 ref=0 err=9.84e-05 (0.29 SE)  tol=1.37e-03
+  PASS  step 13, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0590347 ref=0.0591057 err=7.10e-05 (0.20 SE)  tol=1.41e-03
+  PASS  step 13, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=1.06524e-05 ref=0 err=1.07e-05 (0.03 SE)  tol=1.41e-03
+  PASS  step 14, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.701962 ref=0.702189 err=2.27e-04 (1.04 SE)  tol=8.74e-04
+  PASS  step 14, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.000255668 ref=0 err=2.56e-04 (0.91 SE)  tol=1.12e-03
+  PASS  step 14, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367627 ref=0.367879 err=2.52e-04 (0.80 SE)  tol=1.26e-03
+  PASS  step 14, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-2.1513e-05 ref=0 err=2.15e-05 (0.06 SE)  tol=1.37e-03
+  PASS  step 14, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0594334 ref=0.0591057 err=3.28e-04 (0.93 SE)  tol=1.41e-03
+  PASS  step 14, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=8.16862e-05 ref=0 err=8.17e-05 (0.23 SE)  tol=1.41e-03
+  PASS  step 15, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702293 ref=0.702189 err=1.04e-04 (0.48 SE)  tol=8.74e-04
+  PASS  step 15, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=0.000284722 ref=0 err=2.85e-04 (1.01 SE)  tol=1.12e-03
+  PASS  step 15, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367787 ref=0.367879 err=9.22e-05 (0.29 SE)  tol=1.26e-03
+  PASS  step 15, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-0.000272146 ref=0 err=2.72e-04 (0.79 SE)  tol=1.37e-03
+  PASS  step 15, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0586028 ref=0.0591057 err=5.03e-04 (1.43 SE)  tol=1.41e-03
+  PASS  step 15, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=-0.000568176 ref=0 err=5.68e-04 (1.61 SE)  tol=1.41e-03
+  PASS  step 16, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.701911 ref=0.702189 err=2.78e-04 (1.27 SE)  tol=8.75e-04
+  PASS  step 16, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=0.000229951 ref=0 err=2.30e-04 (0.82 SE)  tol=1.12e-03
+  PASS  step 16, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.36736 ref=0.367879 err=5.19e-04 (1.65 SE)  tol=1.26e-03
+  PASS  step 16, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-2.64034e-05 ref=0 err=2.64e-05 (0.08 SE)  tol=1.37e-03
+  PASS  step 16, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0590616 ref=0.0591057 err=4.41e-05 (0.13 SE)  tol=1.41e-03
+  PASS  step 16, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=-9.11711e-05 ref=0 err=9.12e-05 (0.26 SE)  tol=1.41e-03
+  PASS  step 17, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.70209 ref=0.702189 err=9.88e-05 (0.45 SE)  tol=8.74e-04
+  PASS  step 17, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.00033006 ref=0 err=3.30e-04 (1.17 SE)  tol=1.12e-03
+  PASS  step 17, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367143 ref=0.367879 err=7.36e-04 (2.34 SE)  tol=1.26e-03
+  PASS  step 17, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-2.76899e-05 ref=0 err=2.77e-05 (0.08 SE)  tol=1.37e-03
+  PASS  step 17, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0583218 ref=0.0591057 err=7.84e-04 (2.22 SE)  tol=1.41e-03
+  PASS  step 17, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=-6.45432e-05 ref=0 err=6.45e-05 (0.18 SE)  tol=1.41e-03
+  PASS  step 18, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.701865 ref=0.702189 err=3.23e-04 (1.48 SE)  tol=8.75e-04
+  PASS  step 18, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.000149839 ref=0 err=1.50e-04 (0.53 SE)  tol=1.12e-03
+  PASS  step 18, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.367836 ref=0.367879 err=4.37e-05 (0.14 SE)  tol=1.26e-03
+  PASS  step 18, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=-0.000165826 ref=0 err=1.66e-04 (0.48 SE)  tol=1.37e-03
+  PASS  step 18, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0593811 ref=0.0591057 err=2.75e-04 (0.78 SE)  tol=1.41e-03
+  PASS  step 18, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=-5.54054e-05 ref=0 err=5.54e-05 (0.16 SE)  tol=1.41e-03
+  PASS  step 19, ||xi|| s_i=0.5: E e^(i<xi,z>) Re                  est=0.702532 ref=0.702189 err=3.44e-04 (1.58 SE)  tol=8.73e-04
+  PASS  step 19, ||xi|| s_i=0.5: E e^(i<xi,z>) Im                  est=-0.000251601 ref=0 err=2.52e-04 (0.90 SE)  tol=1.12e-03
+  PASS  step 19, ||xi|| s_i=1.0: E e^(i<xi,z>) Re                  est=0.368354 ref=0.367879 err=4.75e-04 (1.51 SE)  tol=1.26e-03
+  PASS  step 19, ||xi|| s_i=1.0: E e^(i<xi,z>) Im                  est=0.000210514 ref=0 err=2.11e-04 (0.61 SE)  tol=1.37e-03
+  PASS  step 19, ||xi|| s_i=2.0: E e^(i<xi,z>) Re                  est=0.0593569 ref=0.0591057 err=2.51e-04 (0.71 SE)  tol=1.41e-03
+  PASS  step 19, ||xi|| s_i=2.0: E e^(i<xi,z>) Im                  est=0.000217423 ref=0 err=2.17e-04 (0.61 SE)  tol=1.41e-03
+  PASS  steps 0,1 closure, ||xi|| s=0.5 Re                         est=0.702178 ref=0.702189 err=1.00e-05 (0.05 SE)  tol=8.74e-04
+  PASS  steps 0,1 closure, ||xi|| s=0.5 Im                         est=-0.00038799 ref=0 err=3.88e-04 (1.38 SE)  tol=1.12e-03
+  PASS  steps 0,1 closure, ||xi|| s=1.0 Re                         est=0.367909 ref=0.367879 err=2.93e-05 (0.09 SE)  tol=1.26e-03
+  PASS  steps 0,1 closure, ||xi|| s=1.0 Im                         est=0.000686002 ref=0 err=6.86e-04 (2.00 SE)  tol=1.37e-03
+  PASS  steps 0,1 closure, ||xi|| s=2.0 Re                         est=0.0593267 ref=0.0591057 err=2.21e-04 (0.63 SE)  tol=1.41e-03
+  PASS  steps 0,1 closure, ||xi|| s=2.0 Im                         est=-4.09114e-05 ref=0 err=4.09e-05 (0.12 SE)  tol=1.41e-03
+  PASS  steps 9,10 closure, ||xi|| s=0.5 Re                        est=0.702053 ref=0.702189 err=1.35e-04 (0.62 SE)  tol=8.74e-04
+  PASS  steps 9,10 closure, ||xi|| s=0.5 Im                        est=0.000132199 ref=0 err=1.32e-04 (0.47 SE)  tol=1.12e-03
+  PASS  steps 9,10 closure, ||xi|| s=1.0 Re                        est=0.367292 ref=0.367879 err=5.87e-04 (1.87 SE)  tol=1.26e-03
+  PASS  steps 9,10 closure, ||xi|| s=1.0 Im                        est=-0.000334376 ref=0 err=3.34e-04 (0.97 SE)  tol=1.37e-03
+  PASS  steps 9,10 closure, ||xi|| s=2.0 Re                        est=0.0591037 ref=0.0591057 err=2.09e-06 (0.01 SE)  tol=1.41e-03
+  PASS  steps 9,10 closure, ||xi|| s=2.0 Im                        est=-0.000560967 ref=0 err=5.61e-04 (1.59 SE)  tol=1.41e-03
+  PASS  steps 18,19 closure, ||xi|| s=0.5 Re                       est=0.702081 ref=0.702189 err=1.08e-04 (0.49 SE)  tol=8.74e-04
+  PASS  steps 18,19 closure, ||xi|| s=0.5 Im                       est=-0.000188624 ref=0 err=1.89e-04 (0.67 SE)  tol=1.12e-03
+  PASS  steps 18,19 closure, ||xi|| s=1.0 Re                       est=0.36802 ref=0.367879 err=1.41e-04 (0.45 SE)  tol=1.26e-03
+  PASS  steps 18,19 closure, ||xi|| s=1.0 Im                       est=0.000411026 ref=0 err=4.11e-04 (1.20 SE)  tol=1.37e-03
+  PASS  steps 18,19 closure, ||xi|| s=2.0 Re                       est=0.0584434 ref=0.0591057 err=6.62e-04 (1.88 SE)  tol=1.41e-03
+  PASS  steps 18,19 closure, ||xi|| s=2.0 Im                       est=-1.96116e-05 ref=0 err=1.96e-05 (0.06 SE)  tol=1.41e-03
+  info  n=4000000, D=4; worst deviation 2.35 SE over 138 tests
+--> Item 6: PASS   (61.6 s)
+
+=== Item 7: Corollary 1: tempered stable (alpha=1.5, kappa=1.3), tilt rejection, 1.5e6 samples ===
+  PASS  step  0: Laplace E e^(-0.5 lambda)                         est=0.765788 ref=0.765919 err=1.31e-04 (1.55 SE)  tol=3.39e-04
+  PASS  step  0: Laplace E e^(-2.0 lambda)                         est=0.376824 ref=0.377038 err=2.14e-04 (1.74 SE)  tol=4.91e-04
+  PASS  step  0: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.556929 ref=0.556572 err=3.56e-04 (1.33 SE)  tol=1.07e-03
+  PASS  step  0: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107012 ref=0.107033 err=2.11e-05 (0.06 SE)  tol=1.44e-03
+  PASS  step  0: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933333 ref=0.933544 err=2.12e-04 (2.41 SE)  tol=3.51e-04
+  PASS  step  0: increment CF, ||xi|| sqrt(u)=0.5 Im               est=1.28844e-05 ref=0 err=1.29e-05 (0.05 SE)  tol=1.12e-03
+  PASS  step  0: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.76592 ref=0.765919 err=1.00e-06 (0.00 SE)  tol=1.04e-03
+  PASS  step  0: increment CF, ||xi|| sqrt(u)=1.0 Im               est=-9.86881e-05 ref=0 err=9.87e-05 (0.22 SE)  tol=1.82e-03
+  PASS  step  0: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.376239 ref=0.377038 err=7.99e-04 (1.59 SE)  tol=2.01e-03
+  PASS  step  0: increment CF, ||xi|| sqrt(u)=2.0 Im               est=8.34422e-05 ref=0 err=8.34e-05 (0.15 SE)  tol=2.26e-03
+  PASS  step  0: Var of increment coordinate = u E[lambda]         est=0.00416665 ref=0.00415868 err=7.97e-06 (2.32 SE)  tol=1.37e-05
+  PASS  step  1: Laplace E e^(-0.5 lambda)                         est=0.765458 ref=0.765454 err=4.09e-06 (0.05 SE)  tol=3.39e-04
+  PASS  step  1: Laplace E e^(-2.0 lambda)                         est=0.376187 ref=0.376202 err=1.49e-05 (0.12 SE)  tol=4.91e-04
+  PASS  step  1: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.557791 ref=0.55784 err=4.88e-05 (0.18 SE)  tol=1.07e-03
+  PASS  step  1: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107037 ref=0.107277 err=2.40e-04 (0.66 SE)  tol=1.45e-03
+  PASS  step  1: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933418 ref=0.933398 err=1.99e-05 (0.23 SE)  tol=3.51e-04
+  PASS  step  1: increment CF, ||xi|| sqrt(u)=0.5 Im               est=0.000405625 ref=0 err=4.06e-04 (1.45 SE)  tol=1.12e-03
+  PASS  step  1: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765563 ref=0.765454 err=1.09e-04 (0.42 SE)  tol=1.04e-03
+  PASS  step  1: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.000400627 ref=0 err=4.01e-04 (0.88 SE)  tol=1.82e-03
+  PASS  step  1: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.376817 ref=0.376202 err=6.15e-04 (1.23 SE)  tol=2.01e-03
+  PASS  step  1: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000282261 ref=0 err=2.82e-04 (0.50 SE)  tol=2.26e-03
+  PASS  step  1: Var of increment coordinate = u E[lambda]         est=0.00692153 ref=0.0069296 err=8.07e-06 (1.41 SE)  tol=2.28e-05
+  PASS  step  2: Laplace E e^(-0.5 lambda)                         est=0.765431 ref=0.765328 err=1.03e-04 (1.22 SE)  tol=3.38e-04
+  PASS  step  2: Laplace E e^(-2.0 lambda)                         est=0.376029 ref=0.375975 err=5.39e-05 (0.44 SE)  tol=4.90e-04
+  PASS  step  2: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.557786 ref=0.558184 err=3.99e-04 (1.49 SE)  tol=1.07e-03
+  PASS  step  2: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.10674 ref=0.107343 err=6.03e-04 (1.64 SE)  tol=1.47e-03
+  PASS  step  2: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933417 ref=0.933358 err=5.92e-05 (0.68 SE)  tol=3.50e-04
+  PASS  step  2: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-2.37485e-05 ref=0 err=2.37e-05 (0.08 SE)  tol=1.12e-03
+  PASS  step  2: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765191 ref=0.765328 err=1.37e-04 (0.52 SE)  tol=1.04e-03
+  PASS  step  2: increment CF, ||xi|| sqrt(u)=1.0 Im               est=-0.000297171 ref=0 err=2.97e-04 (0.65 SE)  tol=1.82e-03
+  PASS  step  2: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375795 ref=0.375975 err=1.79e-04 (0.36 SE)  tol=2.01e-03
+  PASS  step  2: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000250337 ref=0 err=2.50e-04 (0.44 SE)  tol=2.26e-03
+  PASS  step  2: Var of increment coordinate = u E[lambda]         est=0.00967547 ref=0.00968325 err=7.78e-06 (0.98 SE)  tol=3.19e-05
+  PASS  step  3: Laplace E e^(-0.5 lambda)                         est=0.76525 ref=0.765276 err=2.62e-05 (0.31 SE)  tol=3.39e-04
+  PASS  step  3: Laplace E e^(-2.0 lambda)                         est=0.375863 ref=0.375882 err=1.91e-05 (0.16 SE)  tol=4.91e-04
+  PASS  step  3: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558462 ref=0.558325 err=1.37e-04 (0.51 SE)  tol=1.07e-03
+  PASS  step  3: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107858 ref=0.10737 err=4.88e-04 (1.30 SE)  tol=1.51e-03
+  PASS  step  3: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933146 ref=0.933342 err=1.96e-04 (2.23 SE)  tol=3.52e-04
+  PASS  step  3: increment CF, ||xi|| sqrt(u)=0.5 Im               est=0.00023404 ref=0 err=2.34e-04 (0.84 SE)  tol=1.12e-03
+  PASS  step  3: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765028 ref=0.765276 err=2.49e-04 (0.95 SE)  tol=1.05e-03
+  PASS  step  3: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.000138785 ref=0 err=1.39e-04 (0.30 SE)  tol=1.83e-03
+  PASS  step  3: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375354 ref=0.375882 err=5.28e-04 (1.05 SE)  tol=2.01e-03
+  PASS  step  3: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000675881 ref=0 err=6.76e-04 (1.19 SE)  tol=2.27e-03
+  PASS  step  3: Var of increment coordinate = u E[lambda]         est=0.0124429 ref=0.012422 err=2.09e-05 (2.03 SE)  tol=4.11e-05
+  PASS  step  4: Laplace E e^(-0.5 lambda)                         est=0.76537 ref=0.76525 err=1.20e-04 (1.42 SE)  tol=3.39e-04
+  PASS  step  4: Laplace E e^(-2.0 lambda)                         est=0.376017 ref=0.375836 err=1.82e-04 (1.48 SE)  tol=4.90e-04
+  PASS  step  4: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.55807 ref=0.558395 err=3.25e-04 (1.22 SE)  tol=1.07e-03
+  PASS  step  4: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107425 ref=0.107384 err=4.10e-05 (0.11 SE)  tol=1.48e-03
+  PASS  step  4: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933342 ref=0.933334 err=8.42e-06 (0.10 SE)  tol=3.51e-04
+  PASS  step  4: increment CF, ||xi|| sqrt(u)=0.5 Im               est=0.000328606 ref=0 err=3.29e-04 (1.17 SE)  tol=1.12e-03
+  PASS  step  4: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765317 ref=0.76525 err=6.60e-05 (0.25 SE)  tol=1.04e-03
+  PASS  step  4: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.000533217 ref=0 err=5.33e-04 (1.17 SE)  tol=1.82e-03
+  PASS  step  4: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.376576 ref=0.375836 err=7.40e-04 (1.47 SE)  tol=2.01e-03
+  PASS  step  4: increment CF, ||xi|| sqrt(u)=2.0 Im               est=-0.00013751 ref=0 err=1.38e-04 (0.24 SE)  tol=2.26e-03
+  PASS  step  4: Var of increment coordinate = u E[lambda]         est=0.0151339 ref=0.0151466 err=1.27e-05 (1.02 SE)  tol=4.98e-05
+  PASS  step  5: Laplace E e^(-0.5 lambda)                         est=0.765069 ref=0.765236 err=1.67e-04 (1.97 SE)  tol=3.39e-04
+  PASS  step  5: Laplace E e^(-2.0 lambda)                         est=0.375609 ref=0.37581 err=2.01e-04 (1.63 SE)  tol=4.91e-04
+  PASS  step  5: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.559002 ref=0.558435 err=5.67e-04 (2.11 SE)  tol=1.07e-03
+  PASS  step  5: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.108082 ref=0.107391 err=6.91e-04 (1.87 SE)  tol=1.48e-03
+  PASS  step  5: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933302 ref=0.933329 err=2.69e-05 (0.31 SE)  tol=3.51e-04
+  PASS  step  5: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-0.000501431 ref=0 err=5.01e-04 (1.79 SE)  tol=1.12e-03
+  PASS  step  5: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765253 ref=0.765236 err=1.74e-05 (0.07 SE)  tol=1.05e-03
+  PASS  step  5: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.00103595 ref=0 err=1.04e-03 (2.27 SE)  tol=1.82e-03
+  PASS  step  5: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375182 ref=0.37581 err=6.28e-04 (1.25 SE)  tol=2.01e-03
+  PASS  step  5: increment CF, ||xi|| sqrt(u)=2.0 Im               est=-0.000530125 ref=0 err=5.30e-04 (0.94 SE)  tol=2.27e-03
+  PASS  step  5: Var of increment coordinate = u E[lambda]         est=0.0178613 ref=0.0178574 err=3.90e-06 (0.26 SE)  tol=5.90e-05
+  PASS  step  6: Laplace E e^(-0.5 lambda)                         est=0.76537 ref=0.765227 err=1.43e-04 (1.69 SE)  tol=3.39e-04
+  PASS  step  6: Laplace E e^(-2.0 lambda)                         est=0.376007 ref=0.375794 err=2.14e-04 (1.74 SE)  tol=4.90e-04
+  PASS  step  6: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558037 ref=0.558459 err=4.22e-04 (1.58 SE)  tol=1.07e-03
+  PASS  step  6: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107174 ref=0.107396 err=2.22e-04 (0.61 SE)  tol=1.46e-03
+  PASS  step  6: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933393 ref=0.933326 err=6.64e-05 (0.76 SE)  tol=3.49e-04
+  PASS  step  6: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-6.87453e-05 ref=0 err=6.87e-05 (0.25 SE)  tol=1.12e-03
+  PASS  step  6: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765506 ref=0.765227 err=2.79e-04 (1.07 SE)  tol=1.04e-03
+  PASS  step  6: increment CF, ||xi|| sqrt(u)=1.0 Im               est=3.96825e-07 ref=0 err=3.97e-07 (0.00 SE)  tol=1.82e-03
+  PASS  step  6: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375434 ref=0.375794 err=3.60e-04 (0.72 SE)  tol=2.01e-03
+  PASS  step  6: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000909116 ref=0 err=9.09e-04 (1.61 SE)  tol=2.27e-03
+  PASS  step  6: Var of increment coordinate = u E[lambda]         est=0.0205257 ref=0.0205544 err=2.87e-05 (1.70 SE)  tol=6.73e-05
+  PASS  step  7: Laplace E e^(-0.5 lambda)                         est=0.765136 ref=0.765221 err=8.50e-05 (1.00 SE)  tol=3.40e-04
+  PASS  step  7: Laplace E e^(-2.0 lambda)                         est=0.375778 ref=0.375784 err=5.34e-06 (0.04 SE)  tol=4.91e-04
+  PASS  step  7: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558883 ref=0.558475 err=4.08e-04 (1.52 SE)  tol=1.08e-03
+  PASS  step  7: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.108474 ref=0.107399 err=1.07e-03 (2.84 SE)  tol=1.51e-03
+  PASS  step  7: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.93318 ref=0.933325 err=1.45e-04 (1.64 SE)  tol=3.52e-04
+  PASS  step  7: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-0.000213637 ref=0 err=2.14e-04 (0.76 SE)  tol=1.12e-03
+  PASS  step  7: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765382 ref=0.765221 err=1.61e-04 (0.62 SE)  tol=1.04e-03
+  PASS  step  7: increment CF, ||xi|| sqrt(u)=1.0 Im               est=-0.000370507 ref=0 err=3.71e-04 (0.81 SE)  tol=1.82e-03
+  PASS  step  7: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.376108 ref=0.375784 err=3.25e-04 (0.65 SE)  tol=2.01e-03
+  PASS  step  7: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000415742 ref=0 err=4.16e-04 (0.73 SE)  tol=2.26e-03
+  PASS  step  7: Var of increment coordinate = u E[lambda]         est=0.0232555 ref=0.0232379 err=1.77e-05 (0.92 SE)  tol=7.68e-05
+  PASS  step  8: Laplace E e^(-0.5 lambda)                         est=0.765276 ref=0.765218 err=5.83e-05 (0.69 SE)  tol=3.38e-04
+  PASS  step  8: Laplace E e^(-2.0 lambda)                         est=0.375835 ref=0.375777 err=5.84e-05 (0.48 SE)  tol=4.90e-04
+  PASS  step  8: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558269 ref=0.558485 err=2.16e-04 (0.81 SE)  tol=1.07e-03
+  PASS  step  8: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107094 ref=0.107401 err=3.07e-04 (0.83 SE)  tol=1.48e-03
+  PASS  step  8: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933304 ref=0.933323 err=1.91e-05 (0.22 SE)  tol=3.51e-04
+  PASS  step  8: increment CF, ||xi|| sqrt(u)=0.5 Im               est=0.000150143 ref=0 err=1.50e-04 (0.54 SE)  tol=1.12e-03
+  PASS  step  8: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765357 ref=0.765218 err=1.39e-04 (0.53 SE)  tol=1.04e-03
+  PASS  step  8: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.000149347 ref=0 err=1.49e-04 (0.33 SE)  tol=1.82e-03
+  PASS  step  8: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375867 ref=0.375777 err=9.03e-05 (0.18 SE)  tol=2.01e-03
+  PASS  step  8: increment CF, ||xi|| sqrt(u)=2.0 Im               est=4.3496e-05 ref=0 err=4.35e-05 (0.08 SE)  tol=2.27e-03
+  PASS  step  8: Var of increment coordinate = u E[lambda]         est=0.0258997 ref=0.0259078 err=8.10e-06 (0.38 SE)  tol=8.54e-05
+  PASS  step  9: Laplace E e^(-0.5 lambda)                         est=0.765248 ref=0.765215 err=3.25e-05 (0.38 SE)  tol=3.39e-04
+  PASS  step  9: Laplace E e^(-2.0 lambda)                         est=0.37585 ref=0.375773 err=7.78e-05 (0.63 SE)  tol=4.90e-04
+  PASS  step  9: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.55845 ref=0.558491 err=4.11e-05 (0.15 SE)  tol=1.07e-03
+  PASS  step  9: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.10765 ref=0.107402 err=2.48e-04 (0.67 SE)  tol=1.47e-03
+  PASS  step  9: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933298 ref=0.933323 err=2.50e-05 (0.29 SE)  tol=3.51e-04
+  PASS  step  9: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-0.000236465 ref=0 err=2.36e-04 (0.85 SE)  tol=1.12e-03
+  PASS  step  9: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.764782 ref=0.765215 err=4.33e-04 (1.66 SE)  tol=1.05e-03
+  PASS  step  9: increment CF, ||xi|| sqrt(u)=1.0 Im               est=6.61956e-05 ref=0 err=6.62e-05 (0.15 SE)  tol=1.83e-03
+  PASS  step  9: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375734 ref=0.375773 err=3.82e-05 (0.08 SE)  tol=2.01e-03
+  PASS  step  9: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000743104 ref=0 err=7.43e-04 (1.31 SE)  tol=2.27e-03
+  PASS  step  9: Var of increment coordinate = u E[lambda]         est=0.0285968 ref=0.0285644 err=3.23e-05 (1.37 SE)  tol=9.44e-05
+  PASS  step 10: Laplace E e^(-0.5 lambda)                         est=0.765292 ref=0.765214 err=7.87e-05 (0.93 SE)  tol=3.39e-04
+  PASS  step 10: Laplace E e^(-2.0 lambda)                         est=0.375927 ref=0.37577 err=1.57e-04 (1.28 SE)  tol=4.91e-04
+  PASS  step 10: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558256 ref=0.558495 err=2.39e-04 (0.90 SE)  tol=1.07e-03
+  PASS  step 10: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107155 ref=0.107403 err=2.48e-04 (0.68 SE)  tol=1.45e-03
+  PASS  step 10: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933424 ref=0.933322 err=1.02e-04 (1.17 SE)  tol=3.50e-04
+  PASS  step 10: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-4.12713e-06 ref=0 err=4.13e-06 (0.01 SE)  tol=1.12e-03
+  PASS  step 10: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765532 ref=0.765214 err=3.18e-04 (1.22 SE)  tol=1.04e-03
+  PASS  step 10: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.000115435 ref=0 err=1.15e-04 (0.25 SE)  tol=1.82e-03
+  PASS  step 10: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.37638 ref=0.37577 err=6.10e-04 (1.22 SE)  tol=2.01e-03
+  PASS  step 10: increment CF, ||xi|| sqrt(u)=2.0 Im               est=-0.000393526 ref=0 err=3.94e-04 (0.70 SE)  tol=2.26e-03
+  PASS  step 10: Var of increment coordinate = u E[lambda]         est=0.0311603 ref=0.0312077 err=4.74e-05 (1.85 SE)  tol=1.03e-04
+  PASS  step 11: Laplace E e^(-0.5 lambda)                         est=0.765271 ref=0.765213 err=5.81e-05 (0.69 SE)  tol=3.39e-04
+  PASS  step 11: Laplace E e^(-2.0 lambda)                         est=0.375825 ref=0.375768 err=5.72e-05 (0.47 SE)  tol=4.90e-04
+  PASS  step 11: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.55831 ref=0.558498 err=1.88e-04 (0.70 SE)  tol=1.07e-03
+  PASS  step 11: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107235 ref=0.107403 err=1.69e-04 (0.46 SE)  tol=1.46e-03
+  PASS  step 11: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.93345 ref=0.933322 err=1.28e-04 (1.46 SE)  tol=3.50e-04
+  PASS  step 11: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-0.000180172 ref=0 err=1.80e-04 (0.64 SE)  tol=1.12e-03
+  PASS  step 11: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.76515 ref=0.765213 err=6.33e-05 (0.24 SE)  tol=1.04e-03
+  PASS  step 11: increment CF, ||xi|| sqrt(u)=1.0 Im               est=-0.000299045 ref=0 err=2.99e-04 (0.66 SE)  tol=1.82e-03
+  PASS  step 11: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.376197 ref=0.375768 err=4.29e-04 (0.85 SE)  tol=2.01e-03
+  PASS  step 11: increment CF, ||xi|| sqrt(u)=2.0 Im               est=-0.000583457 ref=0 err=5.83e-04 (1.03 SE)  tol=2.27e-03
+  PASS  step 11: Var of increment coordinate = u E[lambda]         est=0.0338295 ref=0.0338377 err=8.14e-06 (0.29 SE)  tol=1.11e-04
+  PASS  step 12: Laplace E e^(-0.5 lambda)                         est=0.76514 ref=0.765212 err=7.24e-05 (0.85 SE)  tol=3.39e-04
+  PASS  step 12: Laplace E e^(-2.0 lambda)                         est=0.375689 ref=0.375767 err=7.84e-05 (0.64 SE)  tol=4.90e-04
+  PASS  step 12: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.55877 ref=0.558499 err=2.71e-04 (1.01 SE)  tol=1.07e-03
+  PASS  step 12: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107865 ref=0.107404 err=4.61e-04 (1.25 SE)  tol=1.48e-03
+  PASS  step 12: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933278 ref=0.933322 err=4.43e-05 (0.51 SE)  tol=3.50e-04
+  PASS  step 12: increment CF, ||xi|| sqrt(u)=0.5 Im               est=0.000111125 ref=0 err=1.11e-04 (0.40 SE)  tol=1.12e-03
+  PASS  step 12: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765023 ref=0.765212 err=1.89e-04 (0.72 SE)  tol=1.05e-03
+  PASS  step 12: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.00055751 ref=0 err=5.58e-04 (1.22 SE)  tol=1.82e-03
+  PASS  step 12: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375148 ref=0.375767 err=6.19e-04 (1.23 SE)  tol=2.01e-03
+  PASS  step 12: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000818175 ref=0 err=8.18e-04 (1.44 SE)  tol=2.27e-03
+  PASS  step 12: Var of increment coordinate = u E[lambda]         est=0.0364514 ref=0.0364545 err=3.14e-06 (0.10 SE)  tol=1.20e-04
+  PASS  step 13: Laplace E e^(-0.5 lambda)                         est=0.765279 ref=0.765212 err=6.62e-05 (0.78 SE)  tol=3.39e-04
+  PASS  step 13: Laplace E e^(-2.0 lambda)                         est=0.375875 ref=0.375767 err=1.08e-04 (0.88 SE)  tol=4.90e-04
+  PASS  step 13: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558303 ref=0.558499 err=1.96e-04 (0.73 SE)  tol=1.07e-03
+  PASS  step 13: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107294 ref=0.107404 err=1.09e-04 (0.30 SE)  tol=1.47e-03
+  PASS  step 13: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933384 ref=0.933322 err=6.21e-05 (0.71 SE)  tol=3.50e-04
+  PASS  step 13: increment CF, ||xi|| sqrt(u)=0.5 Im               est=0.000348116 ref=0 err=3.48e-04 (1.24 SE)  tol=1.12e-03
+  PASS  step 13: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765167 ref=0.765212 err=4.57e-05 (0.17 SE)  tol=1.05e-03
+  PASS  step 13: increment CF, ||xi|| sqrt(u)=1.0 Im               est=-0.00011364 ref=0 err=1.14e-04 (0.25 SE)  tol=1.82e-03
+  PASS  step 13: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.376047 ref=0.375767 err=2.79e-04 (0.56 SE)  tol=2.01e-03
+  PASS  step 13: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.0016136 ref=0 err=1.61e-03 (2.85 SE)  tol=2.26e-03
+  PASS  step 13: Var of increment coordinate = u E[lambda]         est=0.0390396 ref=0.0390582 err=1.86e-05 (0.58 SE)  tol=1.28e-04
+  PASS  step 14: Laplace E e^(-0.5 lambda)                         est=0.765194 ref=0.765213 err=1.88e-05 (0.22 SE)  tol=3.39e-04
+  PASS  step 14: Laplace E e^(-2.0 lambda)                         est=0.375705 ref=0.375768 err=6.32e-05 (0.52 SE)  tol=4.91e-04
+  PASS  step 14: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558451 ref=0.558498 err=4.78e-05 (0.18 SE)  tol=1.07e-03
+  PASS  step 14: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.106775 ref=0.107404 err=6.29e-04 (1.74 SE)  tol=1.45e-03
+  PASS  step 14: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933244 ref=0.933322 err=7.74e-05 (0.88 SE)  tol=3.51e-04
+  PASS  step 14: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-1.33628e-05 ref=0 err=1.34e-05 (0.05 SE)  tol=1.12e-03
+  PASS  step 14: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765115 ref=0.765213 err=9.72e-05 (0.37 SE)  tol=1.04e-03
+  PASS  step 14: increment CF, ||xi|| sqrt(u)=1.0 Im               est=-0.000108771 ref=0 err=1.09e-04 (0.24 SE)  tol=1.83e-03
+  PASS  step 14: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.374961 ref=0.375768 err=8.07e-04 (1.61 SE)  tol=2.01e-03
+  PASS  step 14: increment CF, ||xi|| sqrt(u)=2.0 Im               est=-5.4484e-05 ref=0 err=5.45e-05 (0.10 SE)  tol=2.26e-03
+  PASS  step 14: Var of increment coordinate = u E[lambda]         est=0.0416313 ref=0.0416489 err=1.76e-05 (0.52 SE)  tol=1.36e-04
+  PASS  step 15: Laplace E e^(-0.5 lambda)                         est=0.765212 ref=0.765213 err=1.11e-06 (0.01 SE)  tol=3.39e-04
+  PASS  step 15: Laplace E e^(-2.0 lambda)                         est=0.375774 ref=0.375769 err=5.05e-06 (0.04 SE)  tol=4.90e-04
+  PASS  step 15: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558546 ref=0.558497 err=4.85e-05 (0.18 SE)  tol=1.07e-03
+  PASS  step 15: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107763 ref=0.107403 err=3.60e-04 (0.96 SE)  tol=1.49e-03
+  PASS  step 15: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933335 ref=0.933322 err=1.29e-05 (0.15 SE)  tol=3.50e-04
+  PASS  step 15: increment CF, ||xi|| sqrt(u)=0.5 Im               est=0.000137119 ref=0 err=1.37e-04 (0.49 SE)  tol=1.12e-03
+  PASS  step 15: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765276 ref=0.765213 err=6.33e-05 (0.24 SE)  tol=1.05e-03
+  PASS  step 15: increment CF, ||xi|| sqrt(u)=1.0 Im               est=-0.000540806 ref=0 err=5.41e-04 (1.19 SE)  tol=1.82e-03
+  PASS  step 15: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.374982 ref=0.375769 err=7.87e-04 (1.57 SE)  tol=2.01e-03
+  PASS  step 15: increment CF, ||xi|| sqrt(u)=2.0 Im               est=-4.99198e-05 ref=0 err=4.99e-05 (0.09 SE)  tol=2.26e-03
+  PASS  step 15: Var of increment coordinate = u E[lambda]         est=0.0442514 ref=0.0442266 err=2.48e-05 (0.68 SE)  tol=1.46e-04
+  PASS  step 16: Laplace E e^(-0.5 lambda)                         est=0.765203 ref=0.765214 err=1.11e-05 (0.13 SE)  tol=3.38e-04
+  PASS  step 16: Laplace E e^(-2.0 lambda)                         est=0.375676 ref=0.37577 err=9.43e-05 (0.77 SE)  tol=4.90e-04
+  PASS  step 16: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558469 ref=0.558495 err=2.58e-05 (0.10 SE)  tol=1.07e-03
+  PASS  step 16: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.10718 ref=0.107403 err=2.23e-04 (0.60 SE)  tol=1.48e-03
+  PASS  step 16: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933355 ref=0.933322 err=3.25e-05 (0.37 SE)  tol=3.49e-04
+  PASS  step 16: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-0.000165765 ref=0 err=1.66e-04 (0.59 SE)  tol=1.12e-03
+  PASS  step 16: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765538 ref=0.765214 err=3.24e-04 (1.24 SE)  tol=1.04e-03
+  PASS  step 16: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.000548465 ref=0 err=5.48e-04 (1.20 SE)  tol=1.82e-03
+  PASS  step 16: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.376253 ref=0.37577 err=4.83e-04 (0.96 SE)  tol=2.01e-03
+  PASS  step 16: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000398454 ref=0 err=3.98e-04 (0.70 SE)  tol=2.26e-03
+  PASS  step 16: Var of increment coordinate = u E[lambda]         est=0.0467732 ref=0.0467914 err=1.82e-05 (0.47 SE)  tol=1.54e-04
+  PASS  step 17: Laplace E e^(-0.5 lambda)                         est=0.765219 ref=0.765215 err=4.28e-06 (0.05 SE)  tol=3.39e-04
+  PASS  step 17: Laplace E e^(-2.0 lambda)                         est=0.375804 ref=0.375772 err=3.27e-05 (0.27 SE)  tol=4.90e-04
+  PASS  step 17: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558554 ref=0.558493 err=6.15e-05 (0.23 SE)  tol=1.07e-03
+  PASS  step 17: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107884 ref=0.107402 err=4.82e-04 (1.30 SE)  tol=1.49e-03
+  PASS  step 17: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933388 ref=0.933323 err=6.59e-05 (0.75 SE)  tol=3.50e-04
+  PASS  step 17: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-0.000195828 ref=0 err=1.96e-04 (0.70 SE)  tol=1.12e-03
+  PASS  step 17: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.765107 ref=0.765215 err=1.08e-04 (0.41 SE)  tol=1.05e-03
+  PASS  step 17: increment CF, ||xi|| sqrt(u)=1.0 Im               est=-0.00010704 ref=0 err=1.07e-04 (0.23 SE)  tol=1.82e-03
+  PASS  step 17: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.37588 ref=0.375772 err=1.08e-04 (0.22 SE)  tol=2.01e-03
+  PASS  step 17: increment CF, ||xi|| sqrt(u)=2.0 Im               est=-0.000424365 ref=0 err=4.24e-04 (0.75 SE)  tol=2.26e-03
+  PASS  step 17: Var of increment coordinate = u E[lambda]         est=0.0492915 ref=0.0493433 err=5.17e-05 (1.28 SE)  tol=1.62e-04
+  PASS  step 18: Laplace E e^(-0.5 lambda)                         est=0.765155 ref=0.765216 err=6.11e-05 (0.72 SE)  tol=3.39e-04
+  PASS  step 18: Laplace E e^(-2.0 lambda)                         est=0.375694 ref=0.375773 err=7.91e-05 (0.64 SE)  tol=4.91e-04
+  PASS  step 18: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558662 ref=0.55849 err=1.73e-04 (0.65 SE)  tol=1.07e-03
+  PASS  step 18: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107379 ref=0.107402 err=2.28e-05 (0.06 SE)  tol=1.45e-03
+  PASS  step 18: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933385 ref=0.933323 err=6.16e-05 (0.70 SE)  tol=3.51e-04
+  PASS  step 18: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-0.00014202 ref=0 err=1.42e-04 (0.51 SE)  tol=1.12e-03
+  PASS  step 18: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.764839 ref=0.765216 err=3.77e-04 (1.44 SE)  tol=1.05e-03
+  PASS  step 18: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.000451105 ref=0 err=4.51e-04 (0.99 SE)  tol=1.82e-03
+  PASS  step 18: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375705 ref=0.375773 err=6.85e-05 (0.14 SE)  tol=2.01e-03
+  PASS  step 18: increment CF, ||xi|| sqrt(u)=2.0 Im               est=-0.000480806 ref=0 err=4.81e-04 (0.85 SE)  tol=2.26e-03
+  PASS  step 18: Var of increment coordinate = u E[lambda]         est=0.0519186 ref=0.0518824 err=3.61e-05 (0.84 SE)  tol=1.71e-04
+  PASS  step 19: Laplace E e^(-0.5 lambda)                         est=0.765111 ref=0.765217 err=1.06e-04 (1.26 SE)  tol=3.39e-04
+  PASS  step 19: Laplace E e^(-2.0 lambda)                         est=0.375575 ref=0.375776 err=2.01e-04 (1.64 SE)  tol=4.90e-04
+  PASS  step 19: E[lambda] = (a/2) c kappa^(a/2-1)                 est=0.558803 ref=0.558487 err=3.17e-04 (1.18 SE)  tol=1.07e-03
+  PASS  step 19: Var[lambda] = (a/2)(1-a/2) c kappa^(a/2-2)        est=0.107709 ref=0.107401 err=3.08e-04 (0.83 SE)  tol=1.49e-03
+  PASS  step 19: increment CF, ||xi|| sqrt(u)=0.5 Re               est=0.933213 ref=0.933323 err=1.10e-04 (1.25 SE)  tol=3.52e-04
+  PASS  step 19: increment CF, ||xi|| sqrt(u)=0.5 Im               est=-0.00026942 ref=0 err=2.69e-04 (0.96 SE)  tol=1.12e-03
+  PASS  step 19: increment CF, ||xi|| sqrt(u)=1.0 Re               est=0.764814 ref=0.765217 err=4.03e-04 (1.54 SE)  tol=1.05e-03
+  PASS  step 19: increment CF, ||xi|| sqrt(u)=1.0 Im               est=0.000167731 ref=0 err=1.68e-04 (0.37 SE)  tol=1.83e-03
+  PASS  step 19: increment CF, ||xi|| sqrt(u)=2.0 Re               est=0.375456 ref=0.375776 err=3.19e-04 (0.64 SE)  tol=2.01e-03
+  PASS  step 19: increment CF, ||xi|| sqrt(u)=2.0 Im               est=0.000184862 ref=0 err=1.85e-04 (0.33 SE)  tol=2.26e-03
+  PASS  step 19: Var of increment coordinate = u E[lambda]         est=0.0544845 ref=0.0544088 err=7.57e-05 (1.69 SE)  tol=1.80e-04
+  PASS  scaling h=0.5: F_rhs(quantile_p(h^2 lambda)), p=0.05       est=0.049964 ref=0.05 err=3.60e-05 (0.14 SE)  tol=1.01e-03
+  PASS  scaling h=0.5: F_rhs(quantile_p(h^2 lambda)), p=0.25       est=0.249043 ref=0.25 err=9.57e-04 (1.91 SE)  tol=2.00e-03
+  PASS  scaling h=0.5: F_rhs(quantile_p(h^2 lambda)), p=0.5        est=0.498799 ref=0.5 err=1.20e-03 (2.08 SE)  tol=2.31e-03
+  PASS  scaling h=0.5: F_rhs(quantile_p(h^2 lambda)), p=0.75       est=0.750333 ref=0.75 err=3.33e-04 (0.67 SE)  tol=2.00e-03
+  PASS  scaling h=0.5: F_rhs(quantile_p(h^2 lambda)), p=0.95       est=0.949955 ref=0.95 err=4.53e-05 (0.18 SE)  tol=1.01e-03
+  PASS  scaling h=0.5: F_rhs(quantile_p(h^2 lambda)), p=0.99       est=0.989811 ref=0.99 err=1.89e-04 (1.65 SE)  tol=4.60e-04
+  info  scaling h=0.5: max rel quantile difference 4.62e-03; two-sample KS p=0.051
+  PASS  scaling h=2.0: F_rhs(quantile_p(h^2 lambda)), p=0.05       est=0.0499793 ref=0.05 err=2.07e-05 (0.08 SE)  tol=1.01e-03
+  PASS  scaling h=2.0: F_rhs(quantile_p(h^2 lambda)), p=0.25       est=0.249545 ref=0.25 err=4.55e-04 (0.91 SE)  tol=2.00e-03
+  PASS  scaling h=2.0: F_rhs(quantile_p(h^2 lambda)), p=0.5        est=0.499039 ref=0.5 err=9.61e-04 (1.66 SE)  tol=2.31e-03
+  PASS  scaling h=2.0: F_rhs(quantile_p(h^2 lambda)), p=0.75       est=0.749996 ref=0.75 err=4.00e-06 (0.01 SE)  tol=2.00e-03
+  PASS  scaling h=2.0: F_rhs(quantile_p(h^2 lambda)), p=0.95       est=0.949966 ref=0.95 err=3.40e-05 (0.14 SE)  tol=1.01e-03
+  PASS  scaling h=2.0: F_rhs(quantile_p(h^2 lambda)), p=0.99       est=0.989887 ref=0.99 err=1.13e-04 (0.98 SE)  tol=4.60e-04
+  info  scaling h=2.0: max rel quantile difference 2.76e-03; two-sample KS p=0.144
+  info  n=1500000 per step, c_i in [0.792,0.795]; worst deviation 2.85 SE
+--> Item 7: PASS   (125.4 s)
+
+=== Item 8: sec:Spractical: closed forms, Kanter + c_i^{2/alpha}, Gauss-Legendre s_i^alpha, alpha=2, grid invariance ===
+  PASS  sigma_t^2 = 1-m_t^2 vs m_t^2 int_0^t g^2/m^2 (rel)         err=1.683e-14  tol=1.000e-10  [paper: <1e-10]
+  PASS  g^2 = b_d t + b_min: int_0^t g^2/m^2 vs Karras (sigma/m)^2 = e^B-1 err=9.217e-15  tol=1.000e-10  [paper: <1e-10]
+  PASS  m_t = e^{-B/2} vs exp(int_0^t f), f = -g^2/2 (rel)         err=1.828e-16  tol=1.000e-10  [paper: <1e-10]
+  PASS  integral-free u_i vs quadrature of Eq. (stepquants) (rel)  err=1.672e-14  tol=1.000e-10  [paper: <1e-10]
+  PASS  Kanter X: E e^(-0.1 X) = e^(-0.1^(a/2))                    est=0.837003 ref=0.837086 err=8.33e-05 (0.58 SE)  tol=5.72e-04
+  PASS  Kanter X: E e^(-1.0 X) = e^(-1.0^(a/2))                    est=0.367847 ref=0.367879 err=3.21e-05 (0.20 SE)  tol=6.37e-04
+  PASS  Kanter X: E e^(-10.0 X) = e^(-10.0^(a/2))                  est=0.00360971 ref=0.00361229 err=2.58e-06 (0.45 SE)  tol=2.28e-05
+  PASS  step  0: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868721 ref=0.868566 err=1.55e-04 (1.18 SE)  tol=5.26e-04
+  PASS  step  0: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.453129 ref=0.452755 err=3.73e-04 (2.18 SE)  tol=6.86e-04
+  PASS  step  0: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0116277 ref=0.0116086 err=1.91e-05 (1.32 SE)  tol=5.81e-05
+  PASS  step  1: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868188 ref=0.868287 err=9.94e-05 (0.75 SE)  tol=5.27e-04
+  PASS  step  1: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451812 ref=0.451939 err=1.27e-04 (0.74 SE)  tol=6.85e-04
+  PASS  step  1: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114791 ref=0.0114913 err=1.22e-05 (0.85 SE)  tol=5.76e-05
+  PASS  step  2: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868265 ref=0.868212 err=5.34e-05 (0.41 SE)  tol=5.26e-04
+  PASS  step  2: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451444 ref=0.451718 err=2.74e-04 (1.60 SE)  tol=6.85e-04
+  PASS  step  2: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114414 ref=0.0114597 err=1.83e-05 (1.27 SE)  tol=5.74e-05
+  PASS  step  3: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.867995 ref=0.868181 err=1.86e-04 (1.41 SE)  tol=5.28e-04
+  PASS  step  3: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451467 ref=0.451627 err=1.60e-04 (0.93 SE)  tol=6.86e-04
+  PASS  step  3: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114491 ref=0.0114468 err=2.30e-06 (0.16 SE)  tol=5.75e-05
+  PASS  step  4: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868264 ref=0.868165 err=9.88e-05 (0.75 SE)  tol=5.26e-04
+  PASS  step  4: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451812 ref=0.451582 err=2.30e-04 (1.34 SE)  tol=6.85e-04
+  PASS  step  4: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114551 ref=0.0114404 err=1.47e-05 (1.02 SE)  tol=5.74e-05
+  PASS  step  5: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.86823 ref=0.868157 err=7.36e-05 (0.56 SE)  tol=5.27e-04
+  PASS  step  5: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451688 ref=0.451556 err=1.32e-04 (0.77 SE)  tol=6.85e-04
+  PASS  step  5: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114467 ref=0.0114368 err=9.95e-06 (0.69 SE)  tol=5.74e-05
+  PASS  step  6: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.867951 ref=0.868151 err=2.01e-04 (1.52 SE)  tol=5.28e-04
+  PASS  step  6: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451481 ref=0.451541 err=5.95e-05 (0.35 SE)  tol=6.86e-04
+  PASS  step  6: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114524 ref=0.0114345 err=1.79e-05 (1.24 SE)  tol=5.74e-05
+  PASS  step  7: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868065 ref=0.868148 err=8.33e-05 (0.63 SE)  tol=5.27e-04
+  PASS  step  7: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451528 ref=0.451531 err=2.86e-06 (0.02 SE)  tol=6.85e-04
+  PASS  step  7: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114441 ref=0.0114331 err=1.09e-05 (0.76 SE)  tol=5.75e-05
+  PASS  step  8: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868229 ref=0.868146 err=8.33e-05 (0.63 SE)  tol=5.26e-04
+  PASS  step  8: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451545 ref=0.451524 err=2.10e-05 (0.12 SE)  tol=6.85e-04
+  PASS  step  8: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114281 ref=0.0114322 err=4.09e-06 (0.29 SE)  tol=5.73e-05
+  PASS  step  9: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868038 ref=0.868144 err=1.06e-04 (0.81 SE)  tol=5.27e-04
+  PASS  step  9: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451216 ref=0.45152 err=3.05e-04 (1.78 SE)  tol=6.85e-04
+  PASS  step  9: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114107 ref=0.0114316 err=2.09e-05 (1.46 SE)  tol=5.73e-05
+  PASS  step 10: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868185 ref=0.868143 err=4.16e-05 (0.32 SE)  tol=5.27e-04
+  PASS  step 10: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451632 ref=0.451518 err=1.14e-04 (0.67 SE)  tol=6.86e-04
+  PASS  step 10: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114522 ref=0.0114312 err=2.10e-05 (1.46 SE)  tol=5.74e-05
+  PASS  step 11: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868134 ref=0.868143 err=9.02e-06 (0.07 SE)  tol=5.27e-04
+  PASS  step 11: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451547 ref=0.451516 err=3.07e-05 (0.18 SE)  tol=6.85e-04
+  PASS  step 11: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114404 ref=0.011431 err=9.38e-06 (0.65 SE)  tol=5.74e-05
+  PASS  step 12: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868113 ref=0.868143 err=2.94e-05 (0.22 SE)  tol=5.27e-04
+  PASS  step 12: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451513 ref=0.451515 err=2.55e-06 (0.01 SE)  tol=6.85e-04
+  PASS  step 12: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114462 ref=0.0114309 err=1.53e-05 (1.06 SE)  tol=5.74e-05
+  PASS  step 13: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868174 ref=0.868143 err=3.18e-05 (0.24 SE)  tol=5.26e-04
+  PASS  step 13: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451282 ref=0.451515 err=2.33e-04 (1.36 SE)  tol=6.85e-04
+  PASS  step 13: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114127 ref=0.0114309 err=1.82e-05 (1.27 SE)  tol=5.73e-05
+  PASS  step 14: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.867992 ref=0.868143 err=1.51e-04 (1.14 SE)  tol=5.28e-04
+  PASS  step 14: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451469 ref=0.451516 err=4.65e-05 (0.27 SE)  tol=6.86e-04
+  PASS  step 14: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114457 ref=0.0114309 err=1.48e-05 (1.03 SE)  tol=5.75e-05
+  PASS  step 15: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.867993 ref=0.868143 err=1.50e-04 (1.14 SE)  tol=5.28e-04
+  PASS  step 15: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451407 ref=0.451516 err=1.09e-04 (0.64 SE)  tol=6.85e-04
+  PASS  step 15: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114392 ref=0.0114311 err=8.11e-06 (0.56 SE)  tol=5.75e-05
+  PASS  step 16: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.867984 ref=0.868144 err=1.59e-04 (1.21 SE)  tol=5.28e-04
+  PASS  step 16: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451371 ref=0.451518 err=1.47e-04 (0.86 SE)  tol=6.85e-04
+  PASS  step 16: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114129 ref=0.0114312 err=1.83e-05 (1.28 SE)  tol=5.73e-05
+  PASS  step 17: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868118 ref=0.868144 err=2.56e-05 (0.19 SE)  tol=5.27e-04
+  PASS  step 17: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451442 ref=0.451519 err=7.74e-05 (0.45 SE)  tol=6.85e-04
+  PASS  step 17: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114288 ref=0.0114315 err=2.70e-06 (0.19 SE)  tol=5.74e-05
+  PASS  step 18: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868143 ref=0.868145 err=1.38e-06 (0.01 SE)  tol=5.27e-04
+  PASS  step 18: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451532 ref=0.451521 err=1.04e-05 (0.06 SE)  tol=6.85e-04
+  PASS  step 18: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114262 ref=0.0114317 err=5.52e-06 (0.39 SE)  tol=5.73e-05
+  PASS  step 19: E e^(-0.1 lambda_i) = e^(-c_i 0.1^(a/2))          est=0.868137 ref=0.868145 err=8.48e-06 (0.06 SE)  tol=5.27e-04
+  PASS  step 19: E e^(-1.0 lambda_i) = e^(-c_i 1.0^(a/2))          est=0.451508 ref=0.451523 err=1.52e-05 (0.09 SE)  tol=6.85e-04
+  PASS  step 19: E e^(-10.0 lambda_i) = e^(-c_i 10.0^(a/2))        est=0.0114423 ref=0.011432 err=1.03e-05 (0.72 SE)  tol=5.74e-05
+  info  Kanter/Laplace: n=2000000, worst deviation 2.18 SE
+  info  reference s_i^alpha: scipy.quad vs 64-node GL agree to 2.5e-16 (rel)
+  PASS  GL K=2: max rel error; |measured/stated - 1| (stated 2.6e-05, meas 2.579e-05) err=8.083e-03  tol=1.923e-02  [2 significant digits]
+  PASS  GL K=4: max rel error; |measured/stated - 1| (stated 6.2e-09, meas 6.215e-09) err=2.415e-03  tol=8.065e-03  [2 significant digits]
+  PASS  GL K=8 (precompute default): max rel error (stated 1.5e-15) err=1.594e-15  tol=5.000e-15  [round-off level]
+  PASS  alpha=2: max rel |s_i^2 - u_i| (precompute, K=8)           err=1.672e-14  tol=1.000e-13  [paper: <1e-13]
+  info  N=5: hm.precompute raised AssertionError('propagated sum must be grid-invariant'); using hm._s_alpha_only (same K=8 rule) instead
+  info  N=  5 (_s_alpha_only, K=8): total = 0.6915025013567294; rel diff to s_0T^alpha (quad) 1.93e-11
+  info  N= 20 (precompute, K=8): total = 0.6915025013434151; rel diff to s_0T^alpha (quad) 1.11e-16
+  info  N= 40 (precompute, K=8): total = 0.6915025013434151; rel diff to s_0T^alpha (quad) 1.11e-16
+  info  N= 80 (precompute, K=8): total = 0.6915025013434151; rel diff to s_0T^alpha (quad) 1.11e-16
+  PASS  grid invariance: max rel spread over N in {20,40,80} (K=8) err=0.000e+00  tol=1.000e-15  [paper: <1e-15]
+  PASS  coarse grid N=5 vs N=20 (K=8)                              err=1.925e-11  tol=5.000e-11  [paper: 2e-11]
+  info  diagnostic: N=5 with K=12 nodes: rel diff to N=20 total 4.2e-15
+  info  diagnostic: N=5 with K=16 nodes: rel diff to N=20 total 0.0e+00
+--> Item 8: PASS   (5.8 s)
+
+=== Summary ===
+  Item 1: PASS  (0.0 s)
+  Item 2: PASS  (1.6 s)
+  Item 3: PASS  (0.0 s)
+  Item 4: PASS  (0.7 s)
+  Item 5: PASS  (0.1 s)
+  Item 6: PASS  (61.6 s)
+  Item 7: PASS  (125.4 s)
+  Item 8: PASS  (5.8 s)
+  total runtime 195.2 s
